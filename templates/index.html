@@ -29,9 +29,23 @@
             max-width: 600px;
             margin: 0 auto;
         }
+        .form-section {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 40px;
+        }
+        .form-section img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(217, 90, 159, 0.3);
+            width: 350px;
+        }
         form {
-            max-width: 700px;
-            margin: 0 auto;
+            flex: 1;
+            min-width: 350px;
         }
         .inputs-container {
             display: flex;
@@ -96,23 +110,29 @@
         <p>Enter the relevant medical feature values below, and our advanced AI model will help predict the likelihood of cancer. Stay proactive about your health!</p>
     </div>
 
-    <form method="POST" id="predictionForm" autocomplete="off">
-        <div class="inputs-container">
-            {% for feature in features %}
-            <div class="input-group">
-                <label for="{{ feature }}">{{ feature.replace('_', ' ').title() }}</label>
-                <input 
-                  type="number" 
-                  step="any" 
-                  id="{{ feature }}" 
-                  name="{{ feature }}" 
-                  required
-                  value="{{ values[feature] if values and feature in values else '' }}">
+    <div class="form-section">
+        <!-- Image section -->
+        <img src="{{ url_for('static', filename='image1.jpg') }}" alt="Health Image" />
+
+        <!-- Form section -->
+        <form method="POST" id="predictionForm" autocomplete="off">
+            <div class="inputs-container">
+                {% for feature in features %}
+                <div class="input-group">
+                    <label for="{{ feature }}">{{ feature.replace('_', ' ').title() }}</label>
+                    <input 
+                      type="number" 
+                      step="any" 
+                      id="{{ feature }}" 
+                      name="{{ feature }}" 
+                      required
+                      value="{{ values[feature] if values and feature in values else '' }}">
+                </div>
+                {% endfor %}
             </div>
-            {% endfor %}
-        </div>
-        <input type="submit" value="Predict" />
-    </form>
+            <input type="submit" value="Predict" />
+        </form>
+    </div>
 
     {% if prediction %}
     <div class="prediction-box" id="predictionResult">
@@ -123,11 +143,9 @@
     <script>
         // Clear inputs after successful prediction submit
         document.getElementById('predictionForm').addEventListener('submit', function(event) {
-            // Let form submit normally, but after submit clear inputs only if prediction displayed
             setTimeout(() => {
                 const resultBox = document.getElementById('predictionResult');
-                if(resultBox) {
-                    // Clear all input fields
+                if (resultBox) {
                     this.querySelectorAll('input[type=number]').forEach(input => input.value = '');
                 }
             }, 200);
