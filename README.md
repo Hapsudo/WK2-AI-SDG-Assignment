@@ -2,6 +2,10 @@
 
 This is a simple web application for predicting the likelihood of cancer using an AI model. Users can input relevant medical features, and the application will provide a prediction based on the trained model.
 
+
+![Demo Screenshot](https://raw.githubusercontent.com/Hapsudo/WK2-AI-SDG-Assignment/main/demo.png)
+
+
 ## Features
 
 - User-friendly interface with a welcoming design.
