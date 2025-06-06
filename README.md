@@ -14,7 +14,7 @@ This is a simple web application for predicting the likelihood of cancer using a
 
 - **Frontend:** HTML, CSS, JavaScript (for form handling)
 - **Backend:** Flask (Python web framework)
-- **Machine Learning:** Your AI model integrated in Flask backend
+- **Machine Learning:** AI model integrated in Flask backend
 - **Template Engine:** Jinja2 (for rendering dynamic form fields)
 
 ## How to Use
