@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cancer Prediction</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 40px;
+            background: #fff0f6;
+            color: #6b2747;
+        }
+        h1 {
+            color: #d6336c;
+            text-align: center;
+        }
+        form {
+            max-width: 700px;
+            margin: 0 auto;
+            background: #f9d5e5;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(214, 51, 108, 0.3);
+        }
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px 30px;
+        }
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: #9d2449;
+        }
+        input[type="number"] {
+            width: 100%;
+            padding: 8px 10px;
+            border: 2px solid #d6336c;
+            border-radius: 6px;
+            font-size: 1em;
+            color: #4a1a35;
+            background: #fff0f6;
+            transition: border-color 0.3s ease;
+        }
+        input[type="number"]:focus {
+            border-color: #a31f51;
+            outline: none;
+            background: #ffe6f0;
+        }
+        button {
+            display: block;
+            background-color: #d6336c;
+            color: white;
+            font-weight: 700;
+            font-size: 1.1em;
+            padding: 12px 40px;
+            border: none;
+            border-radius: 8px;
+            margin: 30px auto 0;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #a31f51;
+        }
+        .result {
+            max-width: 700px;
+            margin: 30px auto 0;
+            padding: 15px 25px;
+            background: #fce4ec;
+            border: 2px solid #d6336c;
+            border-radius: 10px;
+            color: #8b1e47;
+            font-weight: 700;
+            font-size: 1.3em;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(214, 51, 108, 0.25);
+        }
+        @media (max-width: 400px) {
+            form {
+                padding: 15px;
+            }
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 15px 0;
+            }
+            button {
+                padding: 12px 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Cancer Prediction Form</h1>
+    <form method="POST" action="/">
+        <div class="form-grid">
+            {% for feature in features %}
+                <div>
+                    <label for="{{ feature }}">{{ feature.replace('_', ' ').title() }}:</label>
+                    <input type="number" step="any" name="{{ feature }}" id="{{ feature }}"
+                           value="{{ values[feature] if values and feature in values else '' }}" required>
+                </div>
+            {% endfor %}
+        </div>
+        <button type="submit">Predict</button>
+    </form>
+
+    {% if prediction %}
+    <div class="result">
+        Prediction: {{ prediction }}
+    </div>
+    {% endif %}
+</body>
+</html>
+
