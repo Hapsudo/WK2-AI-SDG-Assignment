@@ -1,115 +1,138 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8" />
     <title>Cancer Prediction</title>
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 40px;
+            font-family: Arial, sans-serif;
             background: #fff0f6;
-            color: #6b2747;
+            color: #5a2a4a;
+            margin: 0;
+            padding: 20px;
         }
-        h1 {
-            color: #d6336c;
+        .welcome-section {
+            background: #f8c8dc;
+            border-radius: 12px;
+            padding: 30px 20px;
             text-align: center;
+            box-shadow: 0 4px 10px rgba(249, 184, 219, 0.5);
+            margin-bottom: 30px;
+        }
+        .welcome-section h1 {
+            margin-bottom: 10px;
+            font-size: 2.8em;
+            font-weight: bold;
+        }
+        .welcome-section p {
+            font-size: 1.2em;
+            max-width: 600px;
+            margin: 0 auto;
         }
         form {
             max-width: 700px;
             margin: 0 auto;
-            background: #f9d5e5;
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(214, 51, 108, 0.3);
         }
-        .form-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 20px 30px;
+        .inputs-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+        }
+        .input-group {
+            flex: 1 1 45%;
+            min-width: 250px;
+            display: flex;
+            flex-direction: column;
         }
         label {
-            display: block;
             margin-bottom: 6px;
-            font-weight: 600;
-            color: #9d2449;
+            font-weight: bold;
         }
-        input[type="number"] {
-            width: 100%;
+        input[type="text"], input[type="number"] {
             padding: 8px 10px;
-            border: 2px solid #d6336c;
+            border: 1.5px solid #d98cae;
             border-radius: 6px;
             font-size: 1em;
-            color: #4a1a35;
-            background: #fff0f6;
-            transition: border-color 0.3s ease;
         }
-        input[type="number"]:focus {
-            border-color: #a31f51;
-            outline: none;
-            background: #ffe6f0;
-        }
-        button {
-            display: block;
-            background-color: #d6336c;
-            color: white;
-            font-weight: 700;
-            font-size: 1.1em;
-            padding: 12px 40px;
+        input[type="submit"] {
+            margin-top: 30px;
+            background: #d95a9f;
             border: none;
+            color: white;
+            font-weight: bold;
+            padding: 12px 40px;
             border-radius: 8px;
-            margin: 30px auto 0;
             cursor: pointer;
-            transition: background-color 0.3s ease;
+            font-size: 1.2em;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            box-shadow: 0 4px 8px rgba(217, 90, 159, 0.5);
+            transition: background 0.3s ease;
         }
-        button:hover {
-            background-color: #a31f51;
+        input[type="submit"]:hover {
+            background: #c4478c;
         }
-        .result {
+        .prediction-box {
             max-width: 700px;
-            margin: 30px auto 0;
-            padding: 15px 25px;
+            margin: 30px auto 0 auto;
             background: #fce4ec;
-            border: 2px solid #d6336c;
-            border-radius: 10px;
-            color: #8b1e47;
-            font-weight: 700;
-            font-size: 1.3em;
+            border: 2px solid #d95a9f;
+            border-radius: 12px;
+            padding: 20px;
+            font-size: 1.4em;
+            font-weight: bold;
+            color: #8b2e53;
             text-align: center;
-            box-shadow: 0 4px 10px rgba(214, 51, 108, 0.25);
-        }
-        @media (max-width: 400px) {
-            form {
-                padding: 15px;
-            }
-            .form-grid {
-                grid-template-columns: 1fr;
-                gap: 15px 0;
-            }
-            button {
-                padding: 12px 25px;
-            }
+            box-shadow: 0 4px 10px rgba(217, 90, 159, 0.4);
         }
     </style>
 </head>
 <body>
-    <h1>Cancer Prediction Form</h1>
-    <form method="POST" action="/">
-        <div class="form-grid">
+
+    <div class="welcome-section">
+        <h1>Welcome to the Cancer Prediction Portal</h1>
+        <p>Enter the relevant medical feature values below, and our advanced AI model will help predict the likelihood of cancer. Stay proactive about your health!</p>
+    </div>
+
+    <form method="POST" id="predictionForm" autocomplete="off">
+        <div class="inputs-container">
             {% for feature in features %}
-                <div>
-                    <label for="{{ feature }}">{{ feature.replace('_', ' ').title() }}:</label>
-                    <input type="number" step="any" name="{{ feature }}" id="{{ feature }}"
-                           value="{{ values[feature] if values and feature in values else '' }}" required>
-                </div>
+            <div class="input-group">
+                <label for="{{ feature }}">{{ feature.replace('_', ' ').title() }}</label>
+                <input 
+                  type="number" 
+                  step="any" 
+                  id="{{ feature }}" 
+                  name="{{ feature }}" 
+                  required
+                  value="{{ values[feature] if values and feature in values else '' }}">
+            </div>
             {% endfor %}
         </div>
-        <button type="submit">Predict</button>
+        <input type="submit" value="Predict" />
     </form>
 
     {% if prediction %}
-    <div class="result">
+    <div class="prediction-box" id="predictionResult">
         Prediction: {{ prediction }}
     </div>
     {% endif %}
+
+    <script>
+        // Clear inputs after successful prediction submit
+        document.getElementById('predictionForm').addEventListener('submit', function(event) {
+            // Let form submit normally, but after submit clear inputs only if prediction displayed
+            setTimeout(() => {
+                const resultBox = document.getElementById('predictionResult');
+                if(resultBox) {
+                    // Clear all input fields
+                    this.querySelectorAll('input[type=number]').forEach(input => input.value = '');
+                }
+            }, 200);
+        });
+    </script>
+
 </body>
 </html>
-
