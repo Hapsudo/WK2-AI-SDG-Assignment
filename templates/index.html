@@ -1,156 +1,278 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <title>Cancer Prediction</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #fff0f6;
-            color: #5a2a4a;
-            margin: 0;
-            padding: 20px;
-        }
-        .welcome-section {
-            background: #f8c8dc;
-            border-radius: 12px;
-            padding: 30px 20px;
-            text-align: center;
-            box-shadow: 0 4px 10px rgba(249, 184, 219, 0.5);
-            margin-bottom: 30px;
-        }
-        .welcome-section h1 {
-            margin-bottom: 10px;
-            font-size: 2.8em;
-            font-weight: bold;
-        }
-        .welcome-section p {
-            font-size: 1.2em;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-        .form-section {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            align-items: flex-start;
-            gap: 40px;
-        }
-        .form-section img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 12px;
-            box-shadow: 0 4px 10px rgba(217, 90, 159, 0.3);
-            width: 350px;
-        }
-        form {
-            flex: 1;
-            min-width: 350px;
-        }
-        .inputs-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            justify-content: center;
-        }
-        .input-group {
-            flex: 1 1 45%;
-            min-width: 250px;
-            display: flex;
-            flex-direction: column;
-        }
-        label {
-            margin-bottom: 6px;
-            font-weight: bold;
-        }
-        input[type="text"], input[type="number"] {
-            padding: 8px 10px;
-            border: 1.5px solid #d98cae;
-            border-radius: 6px;
-            font-size: 1em;
-        }
-        input[type="submit"] {
-            margin-top: 30px;
-            background: #d95a9f;
-            border: none;
-            color: white;
-            font-weight: bold;
-            padding: 12px 40px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 1.2em;
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
-            box-shadow: 0 4px 8px rgba(217, 90, 159, 0.5);
-            transition: background 0.3s ease;
-        }
-        input[type="submit"]:hover {
-            background: #c4478c;
-        }
-        .prediction-box {
-            max-width: 700px;
-            margin: 30px auto 0 auto;
-            background: #fce4ec;
-            border: 2px solid #d95a9f;
-            border-radius: 12px;
-            padding: 20px;
-            font-size: 1.4em;
-            font-weight: bold;
-            color: #8b2e53;
-            text-align: center;
-            box-shadow: 0 4px 10px rgba(217, 90, 159, 0.4);
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <title>Cancer Prediction</title>
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #fff0f6;
+      color: #5a2a4a;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .welcome-section {
+      background: #f8c8dc;
+      border-radius: 12px;
+      padding: 30px 20px;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(249, 184, 219, 0.5);
+      margin: 20px;
+      flex-shrink: 0;
+    }
+
+    .welcome-section h1 {
+      margin-bottom: 10px;
+      font-size: 2.8em;
+      font-weight: bold;
+    }
+
+    .welcome-section p {
+      font-size: 1.2em;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .main-content {
+      display: flex;
+      flex-grow: 1;
+      padding: 0 20px 20px;
+      gap: 30px;
+      margin: 0 20px 20px;
+      align-items: stretch;
+      min-height: 0;
+    }
+
+    .image-container {
+      flex: 1;
+      max-width: 600px;
+      background-color: #ffe6f0;
+      border-radius: 12px;
+      display: flex;
+      justify-content: flex-start;
+      align-items: stretch;
+      overflow: hidden;
+    }
+
+    .image-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+      display: block;
+    }
+
+    .form-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-width: 320px;
+    }
+
+    form {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    /* Running header with smooth horizontal scroll */
+    .running-header {
+      font-weight: 700;
+      font-size: 1.2em;
+      color: #9c3679;
+      margin-bottom: 15px;
+      border-bottom: 2px solid #d95a9f;
+      padding-bottom: 6px;
+      letter-spacing: 0.03em;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      white-space: nowrap;
+      overflow: hidden;
+      box-sizing: border-box;
+      position: relative;
+      height: 1.5em;
+      text-align: center;
+    }
+
+    .running-header span {
+      display: inline-block;
+      padding-left: 100%;
+      animation: marquee 12s linear infinite;
+    }
+
+    @keyframes marquee {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-100%); }
+    }
+
+    .inputs-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 15px;
+      justify-content: flex-start;
+      max-height: 100%;
+      overflow-y: auto;
+    }
+
+    .input-group {
+      flex: 1 1 30%;
+      min-width: 120px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    label {
+      margin-bottom: 4px;
+      font-size: 0.85em;
+      font-weight: bold;
+    }
+
+    input[type="text"], input[type="number"] {
+      padding: 4px 6px;
+      border: 1.3px solid #d98cae;
+      border-radius: 5px;
+      font-size: 0.85em;
+      height: 26px;
+    }
+
+    input[type="submit"] {
+      margin-top: 20px;
+      background: #d95a9f;
+      border: none;
+      color: white;
+      font-weight: bold;
+      padding: 10px 30px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1.1em;
+      align-self: center;
+      box-shadow: 0 4px 8px rgba(217, 90, 159, 0.5);
+      transition: background 0.3s ease;
+    }
+
+    input[type="submit"]:hover {
+      background: #c4478c;
+    }
+
+    .prediction-box {
+      margin-top: 20px;
+      background: #fce4ec;
+      border: 2px solid #d95a9f;
+      border-radius: 12px;
+      padding: 20px;
+      font-size: 1.4em;
+      font-weight: bold;
+      color: #8b2e53;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(217, 90, 159, 0.4);
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 12px 10px;
+      background-color: #f8c8dc;
+      color: #5a2a4a;
+      font-weight: 600;
+      font-size: 0.95em;
+      border-top: 1px solid #d95a9f;
+      flex-shrink: 0;
+      user-select: none;
+    }
+
+    /* Responsive for smaller screens */
+    @media (max-width: 900px) {
+      .main-content {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .image-container,
+      .form-container {
+        width: 100%;
+        max-width: none;
+      }
+
+      .input-group {
+        flex: 1 1 100%;
+        min-width: auto;
+      }
+    }
+  </style>
 </head>
 <body>
 
-    <div class="welcome-section">
-        <h1>Welcome to the Cancer Prediction Portal</h1>
-        <p>Enter the relevant medical feature values below, and our advanced AI model will help predict the likelihood of cancer. Stay proactive about your health!</p>
+  <!-- Welcome section -->
+  <div class="welcome-section">
+    <h1>Welcome to the Cancer Prediction Portal</h1>
+    <p>Enter the relevant medical feature values below, and our advanced AI model will help predict the likelihood of cancer. Stay proactive about your health!</p>
+  </div>
+
+  <!-- Image and Form Side by Side -->
+  <div class="main-content">
+    <!-- Left: Image -->
+    <div class="image-container">
+      <img src="{{ url_for('static', filename='image2.png') }}" alt="Medical image">
     </div>
 
-    <div class="form-section">
-        <!-- Image section -->
-        <img src="{{ url_for('static', filename='image1.jpg') }}" alt="Health Image" />
+    <!-- Right: Form -->
+    <div class="form-container">
+      <form method="POST" id="predictionForm" autocomplete="off">
 
-        <!-- Form section -->
-        <form method="POST" id="predictionForm" autocomplete="off">
-            <div class="inputs-container">
-                {% for feature in features %}
-                <div class="input-group">
-                    <label for="{{ feature }}">{{ feature.replace('_', ' ').title() }}</label>
-                    <input 
-                      type="number" 
-                      step="any" 
-                      id="{{ feature }}" 
-                      name="{{ feature }}" 
-                      required
-                      value="{{ values[feature] if values and feature in values else '' }}">
-                </div>
-                {% endfor %}
-            </div>
-            <input type="submit" value="Predict" />
-        </form>
-    </div>
+        <div class="running-header">
+          <span>Treat it. Defeat it. Follow these simple instructions to predict breast cancer.</span>
+        </div>
 
-    {% if prediction %}
-    <div class="prediction-box" id="predictionResult">
+        <div class="inputs-container">
+          {% for feature in features %}
+          <div class="input-group">
+            <label for="{{ feature }}">{{ feature.replace('_', ' ').title() }}</label>
+            <input 
+              type="number" 
+              step="any" 
+              id="{{ feature }}" 
+              name="{{ feature }}" 
+              required
+              value="{{ values[feature] if values and feature in values else '' }}">
+          </div>
+          {% endfor %}
+        </div>
+        <input type="submit" value="Predict" />
+      </form>
+
+      {% if prediction %}
+      <div class="prediction-box" id="predictionResult">
         Prediction: {{ prediction }}
+      </div>
+      {% endif %}
     </div>
-    {% endif %}
+  </div>
 
-    <script>
-        // Clear inputs after successful prediction submit
-        document.getElementById('predictionForm').addEventListener('submit', function(event) {
-            setTimeout(() => {
-                const resultBox = document.getElementById('predictionResult');
-                if (resultBox) {
-                    this.querySelectorAll('input[type=number]').forEach(input => input.value = '');
-                }
-            }, 200);
-        });
-    </script>
+  <!-- Footer -->
+  <div class="footer">
+    &copy; Reserved Rights - Falcom (AI SE Group) | PLP Academy
+  </div>
+
+  <script>
+    // Clear inputs after prediction
+    document.getElementById('predictionForm').addEventListener('submit', function(event) {
+      setTimeout(() => {
+        const resultBox = document.getElementById('predictionResult');
+        if (resultBox) {
+          this.querySelectorAll('input[type=number]').forEach(input => input.value = '');
+        }
+      }, 200);
+    });
+  </script>
 
 </body>
 </html>
