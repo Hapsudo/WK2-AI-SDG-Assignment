@@ -2,14 +2,33 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Cancer Prediction</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Breast Cancer Prediction</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --primary-color: #d95a9f;
+      --primary-light: #f8c8dc;
+      --primary-dark: #8b2e53;
+      --background: #fff0f6;
+      --text-color: #5a2a4a;
+      --shadow-color: rgba(217, 90, 159, 0.2);
+      --transition: all 0.3s ease;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
     html, body {
       height: 100%;
       margin: 0;
-      font-family: Arial, sans-serif;
-      background: #fff0f6;
-      color: #5a2a4a;
+      font-family: 'Poppins', Arial, sans-serif;
+      background: var(--background);
+      color: var(--text-color);
+      line-height: 1.6;
     }
 
     body {
@@ -19,178 +38,273 @@
     }
 
     .welcome-section {
-      background: #f8c8dc;
-      border-radius: 12px;
-      padding: 30px 20px;
+      background: linear-gradient(135deg, var(--primary-light), #ffe6f0);
+      border-radius: 16px;
+      padding: 40px 20px;
       text-align: center;
-      box-shadow: 0 4px 10px rgba(249, 184, 219, 0.5);
+      box-shadow: 0 8px 32px var(--shadow-color);
       margin: 20px;
       flex-shrink: 0;
     }
 
     .welcome-section h1 {
-      margin-bottom: 10px;
+      margin-bottom: 15px;
       font-size: 2.8em;
-      font-weight: bold;
+      font-weight: 700;
+      background: linear-gradient(
+        300deg,
+        var(--primary-dark),
+        var(--primary-color),
+        #ff69b4,
+        var(--primary-dark)
+      );
+      background-size: 240% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 2px 2px 4px var(--shadow-color);
+      padding: 0 20px;
+      animation: gradientText 8s ease infinite;
+      min-height: 1.2em; /* Prevent layout shift during typing */
     }
 
     .welcome-section p {
-      font-size: 1.2em;
-      max-width: 600px;
-      margin: 0 auto;
+      animation: fadeIn 1s ease-out forwards;
+      opacity: 0;
+      animation-delay: 2.5s; /* Start after typing effect */
     }
 
     .main-content {
       display: flex;
       flex-grow: 1;
       padding: 0 20px 20px;
-      gap: 30px;
+      gap: 40px;
       margin: 0 20px 20px;
       align-items: stretch;
-      min-height: 0;
+      animation: fadeIn 1s ease-out forwards;
+      opacity: 0;
+      animation-delay: 3s; /* Start after welcome text */
     }
 
     .image-container {
       flex: 1;
       max-width: 600px;
-      background-color: #ffe6f0;
-      border-radius: 12px;
+      min-height: 500px;
+      background-color: #fff;
+      border-radius: 16px;
       display: flex;
-      justify-content: flex-start;
-      align-items: stretch;
+      justify-content: center;
+      align-items: center;
       overflow: hidden;
+      box-shadow: 0 8px 32px var(--shadow-color);
+      padding: 0;
+      position: relative;
+      transition: transform 0.3s ease;
+    }
+
+    .image-container:hover {
+      transform: scale(1.02);
+    }
+
+    .image-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, rgba(255, 240, 246, 0.1), rgba(248, 200, 220, 0.1));
+      border-radius: 16px;
+      z-index: 1;
     }
 
     .image-container img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      border-radius: 12px;
-      display: block;
+      border-radius: 16px;
+      position: relative;
+      z-index: 2;
+      transition: transform 0.3s ease;
+    }
+
+    /* Make sure the image maintains quality */
+    .image-container img {
+      image-rendering: -webkit-optimize-contrast;
+      image-rendering: crisp-edges;
+      -ms-interpolation-mode: nearest-neighbor;
+    }
+
+    .image-info {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+      color: white;
+      padding: 30px 20px 20px;
+      border-bottom-left-radius: 16px;
+      border-bottom-right-radius: 16px;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.3s ease;
+      z-index: 3;
+    }
+
+    .image-container:hover .image-info {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .image-info h3 {
+      margin: 0 0 10px 0;
+      font-size: 1.2em;
+      font-weight: 600;
+    }
+
+    .image-info p {
+      margin: 0;
+      font-size: 0.9em;
+      line-height: 1.4;
     }
 
     .form-container {
       flex: 1;
       display: flex;
       flex-direction: column;
-      justify-content: center;
+      justify-content: flex-start;
       min-width: 320px;
+      background: #fff;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 8px 32px var(--shadow-color);
     }
 
-    form {
-      width: 100%;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-
-    /* Running header with smooth horizontal scroll */
     .running-header {
-      font-weight: 700;
+      font-weight: 600;
       font-size: 1.2em;
-      color: #9c3679;
-      margin-bottom: 15px;
-      border-bottom: 2px solid #d95a9f;
-      padding-bottom: 6px;
-      letter-spacing: 0.03em;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      white-space: nowrap;
-      overflow: hidden;
-      box-sizing: border-box;
-      position: relative;
-      height: 1.5em;
+      color: var(--primary-color);
+      margin-bottom: 30px;
+      padding: 15px;
+      background: var(--primary-light);
+      border-radius: 8px;
       text-align: center;
-    }
-
-    .running-header span {
-      display: inline-block;
-      padding-left: 100%;
-      animation: marquee 12s linear infinite;
-    }
-
-    @keyframes marquee {
-      0%   { transform: translateX(0); }
-      100% { transform: translateX(-100%); }
     }
 
     .inputs-container {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px 15px;
-      justify-content: flex-start;
-      max-height: 100%;
-      overflow-y: auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 20px;
+      padding: 20px 0;
+      margin-bottom: 20px;
     }
 
     .input-group {
-      flex: 1 1 30%;
-      min-width: 120px;
-      display: flex;
-      flex-direction: column;
+      margin-bottom: 15px;
     }
 
     label {
-      margin-bottom: 4px;
-      font-size: 0.85em;
-      font-weight: bold;
+      display: block;
+      margin-bottom: 8px;
+      font-size: 0.9em;
+      font-weight: 500;
+      color: var(--text-color);
     }
 
-    input[type="text"], input[type="number"] {
-      padding: 4px 6px;
-      border: 1.3px solid #d98cae;
-      border-radius: 5px;
-      font-size: 0.85em;
-      height: 26px;
-    }
-
-    input[type="submit"] {
-      margin-top: 20px;
-      background: #d95a9f;
-      border: none;
-      color: white;
-      font-weight: bold;
-      padding: 10px 30px;
+    input[type="number"] {
+      width: 100%;
+      padding: 10px 12px;
+      border: 2px solid var(--primary-light);
       border-radius: 8px;
+      font-size: 1em;
+      transition: var(--transition);
+      outline: none;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    input[type="number"]:focus {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px var(--shadow-color);
+    }
+
+    .form-controls {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    .btn {
+      padding: 12px 40px;
+      border-radius: 30px;
       cursor: pointer;
       font-size: 1.1em;
-      align-self: center;
-      box-shadow: 0 4px 8px rgba(217, 90, 159, 0.5);
-      transition: background 0.3s ease;
+      font-weight: 600;
+      transition: var(--transition);
+      border: none;
+      box-shadow: 0 4px 15px var(--shadow-color);
+      position: relative;
+      overflow: hidden;
     }
 
-    input[type="submit"]:hover {
-      background: #c4478c;
+    .btn::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: width 0.6s, height 0.6s;
+    }
+
+    .btn:hover::after {
+      width: 200%;
+      height: 200%;
+    }
+
+    .btn-primary {
+      background: linear-gradient(45deg, var(--primary-color), var(--primary-dark));
+      color: white;
+    }
+
+    .btn-secondary {
+      background: white;
+      color: var(--primary-color);
+      border: 2px solid var(--primary-color);
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px var(--shadow-color);
     }
 
     .prediction-box {
-      margin-top: 20px;
-      background: #fce4ec;
-      border: 2px solid #d95a9f;
-      border-radius: 12px;
-      padding: 20px;
+      margin-top: 30px;
+      background: linear-gradient(135deg, #fce4ec, var(--primary-light));
+      border: none;
+      border-radius: 16px;
+      padding: 25px;
       font-size: 1.4em;
-      font-weight: bold;
-      color: #8b2e53;
+      font-weight: 600;
+      color: var(--primary-dark);
       text-align: center;
-      box-shadow: 0 4px 10px rgba(217, 90, 159, 0.4);
+      box-shadow: 0 8px 32px var(--shadow-color);
+      animation: fadeIn 0.5s ease-out;
     }
 
-    /* Footer */
     .footer {
       text-align: center;
-      padding: 12px 10px;
-      background-color: #f8c8dc;
-      color: #5a2a4a;
-      font-weight: 600;
+      padding: 15px;
+      background: linear-gradient(135deg, var(--primary-light), #ffe6f0);
+      color: var(--text-color);
+      font-weight: 500;
       font-size: 0.95em;
-      border-top: 1px solid #d95a9f;
-      flex-shrink: 0;
-      user-select: none;
+      margin-top: auto;
     }
 
-    /* Responsive for smaller screens */
-    @media (max-width: 900px) {
+    @media (max-width: 1024px) {
       .main-content {
         flex-direction: column;
         align-items: center;
@@ -199,37 +313,88 @@
       .image-container,
       .form-container {
         width: 100%;
-        max-width: none;
+        max-width: 600px;
       }
 
-      .input-group {
-        flex: 1 1 100%;
-        min-width: auto;
+      .welcome-section h1 {
+        font-size: 2.2em;
       }
+
+      .image-container {
+        min-height: 400px;
+        max-width: 100%;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .welcome-section {
+        margin: 10px;
+        padding: 20px;
+      }
+
+      .welcome-section h1 {
+        font-size: 1.8em;
+      }
+
+      .main-content {
+        margin: 0 10px 10px;
+        gap: 20px;
+      }
+
+      .inputs-container {
+        grid-template-columns: 1fr;
+      }
+
+      .form-controls {
+        flex-direction: column;
+      }
+
+      .image-container {
+        min-height: 300px;
+      }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes gradientText {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* Input field animations */
+    .input-group input {
+      transform-origin: left;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .input-group input:focus {
+      transform: scale(1.02);
     }
   </style>
 </head>
 <body>
-
-  <!-- Welcome section -->
   <div class="welcome-section">
-    <h1>Welcome to the Cancer Prediction Portal</h1>
-    <p>Enter the relevant medical feature values below, and our advanced AI model will help predict the likelihood of cancer. Stay proactive about your health!</p>
+    <h1 id="typing-text"></h1>
+    <p>Enter the relevant medical feature values below, and our advanced AI model will help predict the likelihood of breast cancer.</p>
   </div>
 
-  <!-- Image and Form Side by Side -->
   <div class="main-content">
-    <!-- Left: Image -->
     <div class="image-container">
-      <img src="{{ url_for('static', filename='image2.png') }}" alt="Medical image">
+      <img src="{{ url_for('static', filename='image2.png') }}" alt="Medical visualization showing breast cancer detection">
+      <div class="image-info">
+        <h3>Advanced Breast Cancer Detection</h3>
+        <p>Using machine learning to analyze cellular features for accurate early detection and diagnosis of breast cancer.</p>
+      </div>
     </div>
 
-    <!-- Right: Form -->
     <div class="form-container">
       <form method="POST" id="predictionForm" autocomplete="off">
-
         <div class="running-header">
-          <span>Treat it. Defeat it. Follow these simple instructions to predict breast cancer.</span>
+          Enter your medical data below for analysis
         </div>
 
         <div class="inputs-container">
@@ -242,37 +407,68 @@
               id="{{ feature }}" 
               name="{{ feature }}" 
               required
-              value="{{ values[feature] if values and feature in values else '' }}">
+              placeholder="Enter value"
+              min="0">
           </div>
           {% endfor %}
         </div>
-        <input type="submit" value="Predict" />
+
+        <div class="form-controls">
+          <button type="submit" class="btn btn-primary">Get Prediction</button>
+          <button type="reset" class="btn btn-secondary">Reset Form</button>
+        </div>
       </form>
 
       {% if prediction %}
-      <div class="prediction-box" id="predictionResult">
-        Prediction: {{ prediction }}
+      <div class="prediction-box">
+        {{ prediction }}
       </div>
       {% endif %}
     </div>
   </div>
 
-  <!-- Footer -->
-  <div class="footer">
-    &copy; Reserved Rights - Falcom (AI SE Group) | PLP Academy
-  </div>
+  <footer class="footer">
+    &copy; Reserved Rights - Falcon (AI SE Group) | PLP Academy
+  </footer>
 
   <script>
-    // Clear inputs after prediction
-    document.getElementById('predictionForm').addEventListener('submit', function(event) {
-      setTimeout(() => {
-        const resultBox = document.getElementById('predictionResult');
-        if (resultBox) {
-          this.querySelectorAll('input[type=number]').forEach(input => input.value = '');
+    const text = "Welcome to Breast Cancer Prediction";
+    const typingText = document.getElementById('typing-text');
+    let charIndex = 0;
+
+    function type() {
+      if (charIndex < text.length) {
+        typingText.textContent += text.charAt(charIndex);
+        charIndex++;
+        setTimeout(type, 70); // Changed from 100ms to 70ms for faster typing
+      }
+    }
+
+    // Start typing when the page loads
+    window.addEventListener('load', () => {
+      setTimeout(type, 300); // Also reduced initial delay from 500ms to 300ms
+    });
+
+    const form = document.getElementById('predictionForm');
+    const inputs = document.querySelectorAll('input[type="number"]');
+
+    // Input validation for negative values
+    inputs.forEach(input => {
+      input.addEventListener('input', function() {
+        if (this.value < 0) {
+          this.value = 0;
+          alert('Please enter a non-negative value');
         }
-      }, 200);
+      });
+    });
+
+    // Reset form confirmation
+    document.querySelector('button[type="reset"]').addEventListener('click', function(e) {
+      e.preventDefault();
+      if (confirm('Are you sure you want to reset the form? All entered data will be cleared.')) {
+        form.reset();
+      }
     });
   </script>
-
 </body>
 </html>
